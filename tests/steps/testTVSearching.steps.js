@@ -6,14 +6,25 @@ const ProductTelevizorPage = require ('../pageobjects/productTelevizor.page');
 const assert = require('chai').assert;
 const {Given, When, Then} = require('@cucumber/cucumber')
 
-Given('открыт сайт market.yandex.ru, раздел - Электроника, подраздел - Телевизоры', function () {
-  Page.open('https://market.yandex.ru/');
-  YandexMarketPage.goToElektronika();
-  CatalogElektronikaPage.goToTV();
+Given(/^открыт сайт (.*)$/, function (url) {
+  Page.open(url);
 })
 
-When(/^указать Цена от - (\d*), Производитель - (.*)$/, function (price, maker) {
+Given(/^раздел - (.*)$/, function (sect) {
+  if (sect = 'Электроника')
+    YandexMarketPage.goToElektronika();
+})
+
+Given(/^подраздел - (.*)$/, function (subsect) {
+  if (subsect = 'Телевизоры')
+    CatalogElektronikaPage.goToTV();
+})
+
+When(/^указать Цена от - (\d*)$/, function (price) {
   CatalogTelevizoryPage.inputPriceFrom(price);
+})
+
+When(/^указать Производитель - (.*)$/, function (maker) {
   let makers = maker.split(', ');
   CatalogTelevizoryPage.setFlagMaker(makers);
 })
